@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catherine Chang — Finance & Data Portfolio</title>
+<meta name="description" content="Portfolio of financial modeling, SQL analysis, and strategy work.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#F6F4EE;
+  --card:#FFFFFF;
+  --ink:#17211D;
+  --muted:#59635C;
+  --line:#E4E0D6;
+  --line-soft:#EDEAE2;
+  --accent:#1C6B4B;
+  --accent-ink:#12492F;
+  --accent-soft:#E8F1EB;
+  --mono-bg:#F0EEE7;
+  --shadow:0 1px 2px rgba(23,33,29,.04), 0 8px 24px rgba(23,33,29,.06);
+  --radius:8px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+
+/* ---------- mono utility ---------- */
+.mono{font-family:'IBM Plex Mono',monospace;font-size:.74rem;letter-spacing:.02em}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.72rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:40;
+  background:rgba(246,244,238,.86);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:1080px;margin:0 auto;padding:16px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem;letter-spacing:-.01em}
+.brand span{color:var(--accent)}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{
+  font-size:.9rem;color:var(--muted);transition:color .2s;
+}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{
+  border:1px solid var(--ink);border-radius:6px;
+  padding:8px 16px;font-size:.85rem;color:var(--ink)!important;
+  transition:background .2s,color .2s;
+}
+.nav-cta:hover{background:var(--ink);color:var(--paper)!important}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink)}
+
+/* ---------- compact hero (portfolio now sits right below it) ---------- */
+.hero{padding:56px 0 44px}
+.hero .eyebrow{margin-bottom:16px}
+.hero h1{
+  font-family:Calibri,'Carlito','Segoe UI',sans-serif;
+  font-weight:600;
+  font-size:clamp(2.1rem,4.6vw,3.2rem);
+  line-height:1.08;
+  letter-spacing:-.015em;
+  max-width:22ch;
+}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero-lead{
+  margin-top:16px;max-width:56ch;
+  font-family:Calibri,'Carlito','Segoe UI',sans-serif;
+  font-size:1.1rem;color:var(--muted);
+}
+.hero-lead strong{color:var(--ink);font-weight:600}
+
+/* ---------- section frame ---------- */
+.section{padding:64px 0;border-top:1px solid var(--line)}
+.section-head{
+  display:flex;align-items:baseline;gap:16px;margin-bottom:8px;
+}
+.section-head .idx{
+  font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--accent);
+}
+.section-head h2{
+  font-family:'Fraunces',serif;font-weight:500;
+  font-size:clamp(1.7rem,3.4vw,2.4rem);letter-spacing:-.01em;
+}
+.section-sub{color:var(--muted);max-width:56ch;margin-bottom:36px}
+
+/* work section sits at the top, so give it a lighter frame */
+#work{padding-top:8px;border-top:none}
+
+/* ---------- filters ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px}
+.filter{
+  font-family:'IBM Plex Mono',monospace;font-size:.78rem;
+  padding:7px 15px;border:1px solid var(--line);border-radius:20px;
+  background:var(--card);color:var(--muted);cursor:pointer;
+  transition:all .2s;
+}
+.filter:hover{border-color:var(--ink);color:var(--ink)}
+.filter.active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+/* ---------- project grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.pcard{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:var(--shadow);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.pcard:hover{transform:translateY(-4px);box-shadow:0 4px 8px rgba(23,33,29,.06),0 18px 40px rgba(23,33,29,.10)}
+
+/* ---------- NEW: preview screenshot on each card ---------- */
+.pcard-preview{
+  position:relative;display:block;width:100%;
+  aspect-ratio:16/9;
+  background:var(--mono-bg);
+  border:none;border-bottom:1px solid var(--line-soft);
+  padding:0;cursor:zoom-in;overflow:hidden;
+  font:inherit;color:inherit;text-align:left;
+}
+.pcard-preview img{
+  width:100%;height:100%;object-fit:cover;object-position:top center;
+  transition:transform .35s ease;
+}
+.pcard:hover .pcard-preview img{transform:scale(1.03)}
+.preview-hint{
+  position:absolute;right:10px;bottom:10px;
+  font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+  background:rgba(23,33,29,.78);color:#fff;
+  padding:4px 9px;border-radius:4px;
+  opacity:0;transition:opacity .2s;
+  pointer-events:none;
+}
+.pcard-preview:hover .preview-hint,
+.pcard-preview:focus-visible .preview-hint{opacity:1}
+/* graceful placeholder if the screenshot file is missing */
+.pcard-preview.missing{cursor:default}
+.pcard-preview.missing::before{
+  content:'PREVIEW';
+  position:absolute;top:12px;left:14px;
+  font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.16em;
+  color:var(--muted);
+}
+.pcard-preview.missing::after{
+  content:'Add screenshot: ' attr(data-file);
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--muted);
+  background:
+    repeating-linear-gradient(-45deg, transparent 0 14px, rgba(23,33,29,.03) 14px 28px),
+    var(--mono-bg);
+  padding:0 20px;text-align:center;
+}
+
+.pcard-top{
+  padding:20px 24px 0;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.tag{
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:5px 10px;border-radius:5px;
+  background:var(--accent-soft);color:var(--accent-ink);
+}
+.pcard-num{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--muted)}
+.pcard-body{padding:16px 24px 0;flex:1}
+.pcard-body h3{
+  font-family:'Fraunces',serif;font-weight:500;font-size:1.32rem;
+  letter-spacing:-.01em;line-height:1.2;margin-bottom:10px;
+}
+.pcard-body p{color:var(--muted);font-size:.95rem}
+
+/* ---------- NEW: labeled "functions used" block ---------- */
+.fns{margin:18px 24px 0}
+.fns-label{
+  font-family:'IBM Plex Mono',monospace;font-size:.62rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:7px;
+}
+.tools{
+  display:flex;flex-wrap:wrap;gap:7px;
+}
+.tool{
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;
+  padding:5px 11px;color:var(--ink);
+  background:var(--mono-bg);
+  border-radius:5px;
+}
+
+.pcard-actions{
+  display:flex;flex-wrap:wrap;gap:8px;padding:20px 24px 24px;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:.84rem;font-weight:500;
+  padding:8px 14px;border-radius:6px;cursor:pointer;
+  border:1px solid var(--line);background:var(--card);color:var(--ink);
+  transition:all .2s;
+}
+.btn:hover{border-color:var(--ink)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+.btn svg{width:14px;height:14px}
+
+/* ---------- quick facts ledger (now lives in About) ---------- */
+.ledger{
+  margin-bottom:40px;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  background:var(--card);
+  box-shadow:var(--shadow);
+}
+.ledger-cell{
+  padding:18px 20px;
+  border-right:1px solid var(--line-soft);
+}
+.ledger-cell:last-child{border-right:none}
+.ledger-key{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;
+}
+.ledger-val{font-family:'Fraunces',serif;font-size:1.02rem;font-weight:500}
+
+/* ---------- about ---------- */
+.about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:start}
+.about-copy p{margin-bottom:16px;color:var(--muted)}
+.about-copy p strong{color:var(--ink)}
+.skills{
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--card);overflow:hidden;box-shadow:var(--shadow);
+}
+.skill-row{
+  display:grid;grid-template-columns:1fr 1.4fr;
+  border-bottom:1px solid var(--line-soft);
+}
+.skill-row:last-child{border-bottom:none}
+.skill-k{
+  padding:13px 18px;
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  border-right:1px solid var(--line-soft);
+}
+.skill-v{padding:13px 18px;font-size:.9rem}
+
+/* ---------- contact ---------- */
+.contact{text-align:center;padding:92px 0;border-top:1px solid var(--line)}
+.contact .eyebrow{margin-bottom:20px}
+.contact h2{
+  font-family:'Fraunces',serif;font-weight:400;
+  font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.02em;margin-bottom:20px;
+}
+.contact p{color:var(--muted);max-width:46ch;margin:0 auto 34px}
+.contact-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ---------- footer ---------- */
+.foot{border-top:1px solid var(--line);padding:28px 0}
+.foot-inner{
+  max-width:1080px;margin:0 auto;padding:0 28px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+}
+.foot .mono{color:var(--muted)}
+
+/* ---------- modal / viewer ---------- */
+.modal{
+  position:fixed;inset:0;z-index:60;display:none;
+  align-items:center;justify-content:center;padding:24px;
+  background:rgba(23,33,29,.55);backdrop-filter:blur(4px);
+}
+.modal.open{display:flex}
+.modal-box{
+  background:var(--card);border-radius:var(--radius);
+  width:min(920px,100%);max-height:88vh;overflow:hidden;
+  display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.3);
+}
+.modal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;border-bottom:1px solid var(--line);
+}
+.modal-head h4{font-family:'Fraunces',serif;font-weight:500;font-size:1.1rem}
+.modal-close{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);line-height:1}
+.modal-close:hover{color:var(--ink)}
+.modal-body{overflow:auto;background:var(--paper)}
+.modal-body iframe{width:100%;height:70vh;border:none;display:block}
+.modal-body img{width:100%}
+
+/* ---------- reveal animation ---------- */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:820px){
+  .ledger{grid-template-columns:repeat(2,1fr)}
+  .ledger-cell:nth-child(2){border-right:none}
+  .ledger-cell:nth-child(1),.ledger-cell:nth-child(2){border-bottom:1px solid var(--line-soft)}
+  .grid{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr;gap:32px}
+  .nav-links{
+    display:none;position:absolute;top:100%;left:0;right:0;
+    flex-direction:column;gap:0;background:var(--paper);border-bottom:1px solid var(--line);
+  }
+  .nav-links.show{display:flex}
+  .nav-links a{padding:14px 28px;border-top:1px solid var(--line-soft)}
+  .nav-cta{margin:12px 28px;text-align:center}
+  .nav-toggle{display:block}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none;transition:none}
+  .pcard{transition:none}
+  .pcard-preview img{transition:none}
+}
+
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">Catherine Chang<span>.</span></a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('show')">☰</button>
+    <div class="nav-links" id="navlinks">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="assets/resume.pdf" class="nav-cta" download>Resume</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ COMPACT HERO (portfolio starts immediately below) ============ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Finance &middot; Data &middot; Strategy</p>
+    <h1>Turning messy data into <em>decisions</em> people can act on.</h1>
+    <p class="hero-lead">
+      I'm <strong>Catherine Chang</strong>, an aspiring financial analyst. Everything below
+      is real work: open a model, page through a deck, or read the queries.
+    </p>
+  </div>
+</header>
+
+<!-- ============ WORK (now the first section) ============ -->
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="idx">02</span>
+      <h2>About</h2>
+    </div>
+    <p class="section-sub">A short version. The long version is in the projects above.</p>
+
+    <div class="ledger" aria-label="Quick facts">
+      <div class="ledger-cell">
+        <div class="ledger-key">Focus</div>
+        <div class="ledger-val">Financial Analysis</div>
+      </div>
+      <div class="ledger-cell">
+        <div class="ledger-key">Core Tools</div>
+        <div class="ledger-val">Excel · SQL · PowerPoint</div>
+      </div>
+      <div class="ledger-cell">
+        <div class="ledger-key">Projects</div>
+        <div class="ledger-val" id="proj-count">6 shipped</div>
+      </div>
+      <div class="ledger-cell">
+        <div class="ledger-key">Status</div>
+        <div class="ledger-val">Open to roles</div>
+      </div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-copy">
+        <p>
+          I move comfortably between the <strong>numbers and the narrative</strong>. On the
+          numbers side, I build three statement models, run DCF and comparable company
+          analysis, and write SQL to pull the data those models depend on.
+        </p>
+        <p>
+          On the narrative side, I care about how the work lands. A model nobody trusts and a
+          deck nobody finishes are the same problem, so I put real effort into making analysis
+          <strong>clear, auditable, and honest about its assumptions</strong>.
+        </p>
+        <p>
+          I'm currently looking for a role where I can do more of this: analyst positions in
+          finance, FP&amp;A, or data. If that sounds like your team, my resume and inbox are
+          one click away.
+        </p>
+      </div>
+
+      <div class="skills" aria-label="Skills">
+        <div class="skill-row">
+          <div class="skill-k">Modeling</div>
+          <div class="skill-v">DCF, LBO, 3-statement, sensitivity</div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-k">Excel</div>
+          <div class="skill-v">Advanced formulas, pivot tables, Power Query, VBA</div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-k">SQL</div>
+          <div class="skill-v">Joins, window functions, CTEs</div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-k">Viz &amp; BI</div>
+          <div class="skill-v">Power BI, Tableau, charting</div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-k">Decks</div>
+          <div class="skill-v">Exec summaries, storyline, data slides</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <p class="eyebrow">Let's talk</p>
+    <h2>Have a role or a question?</h2>
+    <p>I reply to every message. Reach out about analyst roles, a project you'd like to see, or anything else.</p>
+    <div class="contact-links">
+      <a href="mailto:catherine.chang@utexas.edu" class="btn btn-primary">Email me</a>
+      <a href="https://linkedin.com/in/catherinelilinchang" class="btn" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/iremerine" class="btn" target="_blank" rel="noopener">GitHub</a>
+      <a href="assets/resume.pdf" class="btn" download>Download resume</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <span class="mono">© <span id="year"></span> Catherine Chang</span>
+    <span class="mono">Built to be read in 60 seconds.</span>
+  </div>
+</footer>
+
+<!-- ============ MODAL VIEWER ============ -->
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h4 id="modal-title">Preview</h4>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   EDIT HERE. This is the only block you need to change.
+   ---------------------------------------------------------------------
+   Each project has:
+     title        the project name
+     category     used by the filter buttons (keep names consistent)
+     tag          the short label on the card
+     description  1-2 sentences
+     preview      NEW: path to a screenshot shown at the top of the card.
+                  Take a screenshot of your model / first slide, save it
+                  in the /assets folder, and put the path here, e.g.
+                  "assets/previews/dcf.png". Click on the card image
+                  opens it full-size. If the file is missing, the card
+                  shows a placeholder telling you which file to add.
+     functions    NEW: labels of the functions / techniques used in the
+                  work, e.g. "Sensitivity analysis", "VBA macros",
+                  "XLOOKUP", "Pivot tables". Shown under a
+                  "Functions used" caption on the card.
+     assets       array of buttons. Each asset has:
+                    label  button text
+                    type   "pdf"  -> opens preview in the popup
+                           "img"  -> opens an image in the popup
+                           "link" -> opens a URL in a new tab (GitHub, live app)
+                           "file" -> downloads a file (xlsx, pptx, etc.)
+                    url    path or link. Put files in an /assets folder
+                           next to this page, e.g. "assets/model.xlsx"
+                    primary  true = green highlighted button (optional)
+   ===================================================================== */
+const PROJECTS = [
+  {
+    title: "3-Statement DCF: SaaS Company Valuation",
+    category: "Financial Modeling",
+    tag: "Excel Model",
+    description: "A fully linked income statement, balance sheet, and cash flow model with a DCF and sensitivity table. Every assumption is on one driver tab.",
+    preview: "assets/previews/dcf-model.png",
+    functions: ["Sensitivity analysis", "Scenario manager", "XLOOKUP", "INDEX/MATCH", "Data tables"],
+    assets: [
+      { label: "Download model", type: "file", url: "assets/dcf-model.xlsx", primary: true },
+      { label: "View summary", type: "pdf", url: "assets/dcf-summary.pdf" }
+    ]
+  },
+  {
+    title: "Retail Revenue Cohort Analysis",
+    category: "SQL",
+    tag: "SQL Analysis",
+    description: "Queries that segment customers into monthly cohorts and track retention and revenue over 12 months, using window functions and CTEs.",
+    preview: "assets/previews/cohort.png",
+    functions: ["Window functions", "CTEs", "Self joins", "Date bucketing"],
+    assets: [
+      { label: "Read the queries", type: "link", url: "https://github.com/yourusername/cohort-analysis", primary: true },
+      { label: "View results", type: "img", url: "assets/cohort-chart.png" }
+    ]
+  },
+  {
+    title: "Market Entry Strategy Deck",
+    category: "Slides",
+    tag: "Presentation",
+    description: "A board-ready deck recommending whether a mid-size firm should enter a new regional market, with sizing, competitive map, and a phased plan.",
+    preview: "assets/previews/market-entry.png",
+    functions: ["TAM/SAM/SOM sizing", "Competitive mapping", "Exec summary", "Storylining"],
+    assets: [
+      { label: "View deck", type: "pdf", url: "assets/market-entry.pdf", primary: true },
+      { label: "Download .pptx", type: "file", url: "assets/market-entry.pptx" }
+    ]
+  },
+  {
+    title: "Monthly FP&A Dashboard",
+    category: "Financial Modeling",
+    tag: "Dashboard",
+    description: "A budget-versus-actuals dashboard that refreshes from raw exports with Power Query and flags variances above a threshold automatically.",
+    preview: "assets/previews/fpa-dashboard.png",
+    functions: ["Power Query", "VBA macros", "Conditional formatting", "Variance analysis", "Pivot tables"],
+    assets: [
+      { label: "Download workbook", type: "file", url: "assets/fpa-dashboard.xlsx", primary: true },
+      { label: "View screenshot", type: "img", url: "assets/fpa-preview.png" }
+    ]
+  },
+  {
+    title: "Churn Drivers: SQL + Power BI",
+    category: "SQL",
+    tag: "SQL + BI",
+    description: "SQL to assemble a churn dataset from three source tables, then a Power BI report that isolates the top three drivers of cancellation.",
+    preview: "assets/previews/churn.png",
+    functions: ["Multi-table joins", "CASE logic", "DAX measures", "Power BI visuals"],
+    assets: [
+      { label: "Read the queries", type: "link", url: "https://github.com/yourusername/churn-drivers", primary: true },
+      { label: "View report", type: "img", url: "assets/churn-report.png" }
+    ]
+  },
+  {
+    title: "Comparable Company Analysis",
+    category: "Financial Modeling",
+    tag: "Excel Model",
+    description: "A trading comps set for a chosen industry with cleaned multiples, an implied valuation range, and notes on why each peer belongs in the set.",
+    preview: "assets/previews/comps.png",
+    functions: ["Trading multiples", "EV bridge", "Quartile ranges", "Football field chart"],
+    assets: [
+      { label: "Download model", type: "file", url: "assets/comps-analysis.xlsx", primary: true },
+      { label: "View summary", type: "pdf", url: "assets/comps-summary.pdf" }
+    ]
+  }
+];
+
+/* ---- icons ---- */
+const ICONS = {
+  file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>',
+  pdf:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  img:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
+  link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>'
+};
+
+/* ---- render cards ---- */
+const grid = document.getElementById('grid');
+const filtersEl = document.getElementById('filters');
+document.getElementById('proj-count').textContent = PROJECTS.length + " shipped";
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const esc = s => String(s).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+function buttonHtml(a){
+  const cls = a.primary ? 'btn btn-primary' : 'btn';
+  const icon = ICONS[a.type] || ICONS.link;
+  if(a.type === 'link'){
+    return `<a class="${cls}" href="${a.url}" target="_blank" rel="noopener">${icon}${a.label}</a>`;
+  }
+  if(a.type === 'file'){
+    return `<a class="${cls}" href="${a.url}" download>${icon}${a.label}</a>`;
+  }
+  // pdf or img -> open in modal
+  return `<button class="${cls}" onclick="openModal('${a.type}','${a.url}','${esc(a.label)}')">${icon}${a.label}</button>`;
+}
+
+function previewHtml(p){
+  if(!p.preview) return '';
+  return `
+    <button class="pcard-preview" data-file="${p.preview}"
+      onclick="if(!this.classList.contains('missing'))openModal('img','${p.preview}','${esc(p.title)}')"
+      aria-label="Enlarge preview of ${esc(p.title)}">
+      <img src="${p.preview}" alt="Preview of ${esc(p.title)}" loading="lazy"
+        onerror="this.parentElement.classList.add('missing');this.remove()">
+      <span class="preview-hint">Click to enlarge</span>
+    </button>`;
+}
+
+function renderCards(list){
+  grid.innerHTML = list.map((p,i) => `
+    <article class="pcard reveal" data-cat="${p.category}">
+      ${previewHtml(p)}
+      <div class="pcard-top">
+        <span class="tag">${p.tag}</span>
+        <span class="pcard-num">${String(i+1).padStart(2,'0')}</span>
+      </div>
+      <div class="pcard-body">
+        <h3>${p.title}</h3>
+        <p>${p.description}</p>
+      </div>
+      <div class="fns">
+        <div class="fns-label">Functions used</div>
+        <div class="tools">${(p.functions||[]).map(t=>`<span class="tool">${t}</span>`).join('')}</div>
+      </div>
+      <div class="pcard-actions">${p.assets.map(buttonHtml).join('')}</div>
+    </article>
+  `).join('');
+  observeReveals();
+}
+
+/* ---- filters ---- */
+const cats = ['All', ...new Set(PROJECTS.map(p=>p.category))];
+filtersEl.innerHTML = cats.map((c,i)=>
+  `<button class="filter ${i===0?'active':''}" data-cat="${c}">${c}</button>`
+).join('');
+
+filtersEl.addEventListener('click', e=>{
+  const btn = e.target.closest('.filter');
+  if(!btn) return;
+  filtersEl.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const cat = btn.dataset.cat;
+  renderCards(cat==='All' ? PROJECTS : PROJECTS.filter(p=>p.category===cat));
+});
+
+/* ---- modal ---- */
+const modal = document.getElementById('modal');
+const modalBody = document.getElementById('modal-body');
+const modalTitle = document.getElementById('modal-title');
+
+function openModal(type, url, title){
+  modalTitle.textContent = title || 'Preview';
+  modalBody.innerHTML = type === 'pdf'
+    ? `<iframe src="${url}" title="${title}"></iframe>`
+    : `<img src="${url}" alt="${title}">`;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+  modal.classList.remove('open');
+  modalBody.innerHTML = '';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ---- scroll reveal ---- */
+let io;
+function observeReveals(){
+  if(io) io.disconnect();
+  io = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+}
+
+/* ---- init ---- */
+renderCards(PROJECTS);
+document.querySelectorAll('.section').forEach(el=>{
+  el.classList.add('reveal');
+});
+observeReveals();
+
+/* close mobile menu on link tap */
+document.querySelectorAll('.nav-links a').forEach(a=>{
+  a.addEventListener('click',()=>document.getElementById('navlinks').classList.remove('show'));
+});
+</script>
+</body>
+</html>
